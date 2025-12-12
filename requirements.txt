@@ -1,0 +1,8 @@
+# Xử lý dữ liệu
+pandas
+numpy
+PyYAML
+
+# Hỗ trợ clean code/tiện ích
+tqdm
+python-dotenv
