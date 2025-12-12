@@ -19,7 +19,7 @@ We also provide definitions of hateful and offensive spans in Vietnamese comment
 
 We hope that this dataset will be useful for researchers and practitioners in the field of hate speech detection in general and hate spans detection in particular.
 
-
+tesst
 
 ## Dataset
 ViHOS contains 26,476 human-annotated spans on 11,056 comments (5,360 comments have hate and offensive spans, and 5,696 comments do not)
