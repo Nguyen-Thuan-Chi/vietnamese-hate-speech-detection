@@ -1,0 +1,6 @@
+data:
+  # Đây là chỗ duy nhất bạn cần sửa nếu di chuyển thư mục data
+  train_path: "data/Sequence_labeling_based_version/Syllable/train_BIO_syllable.csv"
+
+system:
+  device: "cpu"
