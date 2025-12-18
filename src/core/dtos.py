@@ -1,5 +1,6 @@
 from dataclasses import dataclass
 
+#dont touch it, myself will thank you later
 # @dataclass là một cách viết tắt của Python
 # Nó tự động tạo ra hàm __init__ để gán dữ liệu, giúp code ngắn gọn
 @dataclass
