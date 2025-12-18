@@ -1,32 +1,32 @@
-# main.py
 from src.utils.config_loader import config
 from src.data_layer.data_loader import DataLoader
+# Import Class quản lý mới
+from src.services.preprocessing.pipeline import PreprocessingPipeline
 
 
 def main():
-    # ... (code bên trong giữ nguyên) ...
-    print("=== TEST LOAD DỮ LIỆU ===")
+    print("=== TEST PREPROCESSING PIPELINE ===")
 
-    if config is None:
-        print("Lỗi: Không tìm thấy file config.yaml")
-        return
-
+    # 1. Load Data (Như cũ)
+    if config is None: return
     path = config.data.get('train_path')
-    print(f"File cần đọc: {path}")
-
     loader = DataLoader()
-    data = loader.load_data(path)
+    raw_data = loader.load_data(path)
 
-    if data:
-        print(f"\nThành công! Tìm thấy {len(data)} mẫu dữ liệu.")
-        print("Ví dụ 3 dòng đầu tiên:")
-        for item in data[:3]:
-            print(f" - {item}")
-    else:
-        print("\nThất bại. Danh sách rỗng.")
+    if not raw_data: return
+
+    # 2. Gọi Pipeline làm sạch (MỚI)
+    pipeline = PreprocessingPipeline()
+    clean_data = pipeline.run(raw_data)
+
+    # 3. So sánh kết quả
+    print("\n--- SO SÁNH TRƯỚC VÀ SAU KHI XỬ LÝ ---")
+    # In thử 5 dòng đầu để thấy sự khác biệt
+    for i in range(5):
+        print(f"[Gốc ]: {raw_data[i].text} | Label: {raw_data[i].label}")
+        print(f"[Sạch]: {clean_data[i].text} | Label: {clean_data[i].label}")
+        print("-" * 50)
 
 
-# --- ĐÂY LÀ PHẦN BẠN ĐANG THIẾU ---
-# Nó phải nằm sát lề trái (không được thụt vào trong)
 if __name__ == "__main__":
     main()
