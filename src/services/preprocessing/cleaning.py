@@ -41,9 +41,19 @@ class TextCleaner:
     def normalize_whitespace(self, text: str) -> str:
         return re.sub(r'\s+', ' ', text).strip()
 
+    def normalize_repeating_chars(self, text: str) -> str:
+        """
+        nguuu -> ngu
+        kẹttttttt -> kẹt
+        (Chỉ áp dụng khi ký tự lặp lại từ 3 lần trở lên để tránh sửa sai từ 'xoong', 'quần soóc')
+        """
+
+        return re.sub(r'(.)\1{2,}', r'\1', text)
+
     def run(self, text: str) -> str:
         text = self.replace_special_tokens(text)  # Chạy cái này trước để map emoji
         text = self.to_lower(text)
+        text = self.normalize_repeating_chars(text)
         text = self.remove_special_chars(text)  # Sau đó mới dọn rác
         text = self.normalize_whitespace(text)
         return text
