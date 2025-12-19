@@ -18,6 +18,9 @@ env/
 data/
 # Giữ lại file mô tả để người khác biết cần tải data gì
 !data/README.md
+images/
+*.png
+*.jpg
 
 # Chặn toàn bộ thư mục lưu model và log
 saved_models/
