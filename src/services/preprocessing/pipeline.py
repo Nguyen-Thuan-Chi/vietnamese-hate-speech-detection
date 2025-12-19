@@ -19,21 +19,21 @@ class PreprocessingPipeline:
         return text
 
     def run(self, data: List[HateSpeechSample]) -> List[HateSpeechSample]:
-        """Xử lý cả 1 danh sách (Batch processing)"""
         print("--> [Pipeline] Đang làm sạch dữ liệu...")
         processed_data = []
 
         for item in data:
-            # Xử lý text
             clean_text = self.process_text(item.text)
-
-            # Xử lý Label (Chuyển từ list string "['O', 'B-H']" sang số "1")
-            # Logic: Nếu có nhãn 'B-' hoặc 'I-' (tức là có nhãn xấu) thì gán là 1, ngược lại là 0
             label_str = item.label
-            is_hate = 1 if ("B-" in label_str or "I-" in label_str) else 0
 
-            # Đóng gói lại vào hộp mới
-            processed_data.append(HateSpeechSample(text=clean_text, label=str(is_hate)))
+            # --- LOGIC NHỊ PHÂN (0 vs 1) ---
+            # Chỉ có tag B-T và I-T là độc hại
+            if "B-T" in label_str or "I-T" in label_str:
+                final_label = 1  # TOXIC
+            else:
+                final_label = 0  # CLEAN
+
+            processed_data.append(HateSpeechSample(text=clean_text, label=str(final_label)))
 
         print(f"--> [Pipeline] Xong! Đã xử lý {len(processed_data)} dòng.")
         return processed_data
