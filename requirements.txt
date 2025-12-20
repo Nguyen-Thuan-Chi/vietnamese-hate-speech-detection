@@ -1,0 +1,25 @@
+# requirements.txt
+--extra-index-url https://download.pytorch.org/whl/cu118
+
+# Core AI (Bản ổn định thực tế)
+torch>=2.0.0
+transformers>=4.30.0
+scikit-learn>=1.2.0
+numpy>=1.24.0
+tqdm
+
+# Backend
+fastapi
+uvicorn
+pydantic>=2.0.0
+python-multipart
+requests
+
+# Frontend
+streamlit
+plotly
+altair
+pandas
+openpyxl
+pyyaml
+watchdog
