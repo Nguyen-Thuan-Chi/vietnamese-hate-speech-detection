@@ -4,6 +4,7 @@ import re
 
 class TeencodeConverter:
     def __init__(self):
+        # Normalize common Vietnamese teencode and slang variants; avoid rule-based moral labeling
         self.teencode_dict = {
             # --- Nhóm phủ định ---
             "k": "không", "ko": "không", "kh": "không", "k0": "không", "hok": "không",
@@ -42,12 +43,10 @@ class TeencodeConverter:
         }
 
     def convert(self, text: str) -> str:
-        # [QUAN TRỌNG] Sort từ dài xuống ngắn để tránh thay thế nhầm
-        # Ví dụ: Xử lý "vcl" trước "vc", "nguu" trước "ngu"
+        # Sort longer keys first to minimize partial replacement collisions
         keys = sorted(self.teencode_dict.keys(), key=len, reverse=True)
 
-        # Regex update:
-        # map(re.escape, keys): Đảm bảo các ký tự đặc biệt trong key (như 3///) không gây lỗi regex
+        # Word-boundary matching to avoid inside-word replacements; escape keys for regex safety
         pattern = r'(?<!\w)(' + '|'.join(map(re.escape, keys)) + r')(?!\w)'
 
         return re.sub(pattern, lambda x: self.teencode_dict[x.group()], text)

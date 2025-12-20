@@ -5,7 +5,8 @@ from src.core.dtos import HateSpeechSample
 
 class IDataLoader(ABC):
     """
-    Interface quy định việc đọc dữ liệu.
+    Contract for dataset loaders returning normalized HateSpeechSample lists from a path.
+    Implementations may support multiple dataset formats but must abstract file specifics.
     """
     @abstractmethod
     def load_data(self, file_path: str) -> List[HateSpeechSample]:
