@@ -7,8 +7,8 @@ from src.core.interfaces import IDataLoader
 
 class DataLoader(IDataLoader):
     """
-    Class chịu trách nhiệm đọc dữ liệu ViHOS.
-    Phiên bản: Hỗ trợ file Sequence Labeling (Gom nhóm theo sentence_id)
+    Loader for ViHOS datasets. Supports sequence-labeled inputs by aggregating tokens per sentence_id.
+    Assumes UTF-8 CSV with columns consistent to the dataset version; falls back to sentence-level fields when needed.
     """
 
     def load_data(self, file_path: str) -> List[HateSpeechSample]:
@@ -16,37 +16,28 @@ class DataLoader(IDataLoader):
         results = []
 
         try:
-            # 1. Đọc file CSV
             df = pd.read_csv(file_path, encoding='utf-8')
 
-            # 2. Kiểm tra xem có cột 'sentence_id' và 'Word' không (đặc trưng của ViHOS dạng sequence)
+            # Sequence format detected: reconstruct text and preserve tag lists for downstream conversion
             if 'sentence_id' in df.columns and 'Word' in df.columns:
                 print("--> Phát hiện dữ liệu dạng Sequence (Từ tách rời). Đang ghép lại thành câu...")
 
-                # Hàm để xử lý khi gom nhóm: Nối các từ lại bằng dấu cách
                 def join_text(x):
                     return " ".join([str(s) for s in x])
 
-                # Gom nhóm theo sentence_id
-                # 'Word' sẽ được nối lại, 'Tag' sẽ giữ nguyên danh sách
                 grouped_df = df.groupby('sentence_id').agg({
                     'Word': join_text,
-                    'Tag': list  # Giữ nguyên list các tag để sau này dùng nếu cần
+                    'Tag': list
                 }).reset_index()
 
-                # Duyệt qua từng câu đã ghép
                 for _, row in grouped_df.iterrows():
                     full_text = row['Word']
-
-                    # Tạm thời lấy tag đầu tiên hoặc xử lý logic tag sau
-                    # Ở đây mình convert list tag thành chuỗi để in ra cho dễ nhìn
                     tags_str = str(row['Tag'])
-
                     sample = HateSpeechSample(text=full_text, label=tags_str)
                     results.append(sample)
 
             else:
-                # Fallback: Nếu không phải dạng sequence thì đọc kiểu cũ (dòng đơn)
+                # Sentence-level fallback; column names vary across sources
                 print("--> Dữ liệu dạng thường (Sentence level).")
                 for _, row in df.iterrows():
                     text_val = str(row.get('sentence', row.get('text', '')))
@@ -60,5 +51,5 @@ class DataLoader(IDataLoader):
         except Exception as e:
             print(f"[Lỗi] Không đọc được file: {e}")
             import traceback
-            traceback.print_exc()  # In chi tiết lỗi để debug
+            traceback.print_exc()
             return []

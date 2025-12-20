@@ -2,12 +2,12 @@
 import requests
 import pandas as pd
 
-# Địa chỉ API Backend (Mặc định chạy local)
+# Backend base URL; dashboard assumes a local dev server. External deployments should override.
 API_URL = "http://localhost:8000"
 
 
 def check_api_status():
-    """Ping xem Server sống hay chết"""
+    """Probe health endpoint; used to gate UI actions without triggering inference."""
     try:
         response = requests.get(f"{API_URL}/")
         if response.status_code == 200:
@@ -18,7 +18,7 @@ def check_api_status():
 
 
 def predict_text(text: str):
-    """Gửi 1 câu sang API để soi"""
+    """Submit a single text to the API; returns JSON or an error payload."""
     try:
         payload = {"text": text}
         response = requests.post(f"{API_URL}/predict", json=payload)
@@ -32,17 +32,14 @@ def predict_text(text: str):
 
 def predict_csv(df: pd.DataFrame, text_col: str):
     """
-    Chạy vòng lặp quét cả file Excel/CSV.
-    Lưu ý: Cách này hơi chậm nếu file lớn (gọi API từng dòng).
-    Nhưng với Demo đồ án thì OK.
+    Iterate rows and call predict per-item; simple but slow for large files due to per-request overhead.
+    Suitable for demo-scale datasets; batch endpoints or async pipelines are recommended for production.
     """
     results = []
-    # Tạo thanh loading giả lập trong Streamlit sau
     for index, row in df.iterrows():
         text = str(row[text_col])
         res = predict_text(text)
 
-        # Lấy kết quả
         if "error" not in res:
             results.append({
                 "Original Text": text,

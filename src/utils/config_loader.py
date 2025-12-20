@@ -1,25 +1,23 @@
-import yaml  # Thư viện PyYAML để đọc file yaml
+import yaml
 import os
 
 
 class Config:
     def __init__(self, config_path="config.yaml"):
-        # Kiểm tra xem file có tồn tại không
+        # Fail early if configuration is missing; prevents partial runs with undefined paths
         if not os.path.exists(config_path):
             raise FileNotFoundError(f"Không tìm thấy file: {config_path}")
 
-        # Mở file và đọc nội dung
         with open(config_path, "r", encoding="utf-8") as f:
             self._cfg = yaml.safe_load(f)
 
-    # Hàm này giúp lấy đường dẫn data an toàn
     @property
     def data(self):
+        # Data section holds dataset paths and related settings; defaults to empty for robustness
         return self._cfg.get("data", {})
 
 
-# Tạo sẵn một biến 'config' để các file khác chỉ việc import và dùng
-# Nếu lỗi thì gán bằng None
+# Provide a module-level config for convenience; downstream code should handle None defensively
 try:
     config = Config()
 except Exception:
