@@ -1,5 +1,6 @@
 # src/services/predictor.py
 import torch
+import numpy as np
 from transformers import AutoTokenizer
 from src.models.phobert_classifier import HateSpeechClassifier
 from src.services.preprocessing.pipeline import PreprocessingPipeline
@@ -31,6 +32,39 @@ class HateSpeechPredictor:
         # Fixed label mapping for binary output; change requires retraining or post-processing update
         self.idx2label = {0: "CLEAN", 1: "TOXIC"}
 
+    def predict_proba(self, texts: list) -> np.ndarray:
+        """
+        Batch prediction returning class probabilities for LIME compatibility.
+
+        Args:
+            texts: List of raw text strings to classify.
+
+        Returns:
+            numpy array of shape (len(texts), 2) with probabilities for [CLEAN, TOXIC].
+        """
+        probabilities = []
+        for text in texts:
+            # Preprocess text through the same pipeline as predict()
+            clean_text = self.pipeline.process_text(text)
+
+            encoding = self.tokenizer.encode_plus(
+                clean_text,
+                max_length=128,
+                padding='max_length',
+                truncation=True,
+                return_tensors='pt'
+            )
+
+            input_ids = encoding['input_ids'].to(self.device)
+            attention_mask = encoding['attention_mask'].to(self.device)
+
+            with torch.no_grad():
+                outputs = self.model(input_ids, attention_mask)
+                probs = torch.nn.functional.softmax(outputs, dim=1)
+                probabilities.append(probs.cpu().numpy()[0])
+
+        return np.array(probabilities)
+
     def predict(self, text: str):
         # Preprocessing must mirror training-time transformations to avoid distribution shift
         clean_text = self.pipeline.process_text(text)
@@ -57,5 +91,9 @@ class HateSpeechPredictor:
             "text_input": text,
             "text_clean": clean_text,
             "label": self.idx2label[pred_idx],
-            "confidence": f"{confidence:.2%}"
+            "confidence": f"{confidence:.2%}",
+            # NOTE: This model is sentence-level only. Span-level annotations
+            # would require a token classification head (e.g., BIO tagging),
+            # which is not implemented. Empty list signals UI to use fallback.
+            "spans": []
         }

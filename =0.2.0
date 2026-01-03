@@ -1,0 +1,61 @@
+Collecting lime
+  Downloading lime-0.2.0.1.tar.gz (275 kB)
+  Installing build dependencies: started
+  Installing build dependencies: finished with status 'done'
+  Getting requirements to build wheel: started
+  Getting requirements to build wheel: finished with status 'done'
+  Preparing metadata (pyproject.toml): started
+  Preparing metadata (pyproject.toml): finished with status 'done'
+Collecting matplotlib (from lime)
+  Downloading matplotlib-3.10.8-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.whl.metadata (52 kB)
+Requirement already satisfied: numpy in ./.venv/lib/python3.12/site-packages (from lime) (2.3.5)
+Requirement already satisfied: scipy in ./.venv/lib/python3.12/site-packages (from lime) (1.16.3)
+Requirement already satisfied: tqdm in ./.venv/lib/python3.12/site-packages (from lime) (4.67.1)
+Requirement already satisfied: scikit-learn>=0.18 in ./.venv/lib/python3.12/site-packages (from lime) (1.8.0)
+Collecting scikit-image>=0.12 (from lime)
+  Downloading scikit_image-0.26.0-cp312-cp312-manylinux_2_24_x86_64.manylinux_2_28_x86_64.whl.metadata (15 kB)
+Requirement already satisfied: networkx>=3.0 in ./.venv/lib/python3.12/site-packages (from scikit-image>=0.12->lime) (3.6.1)
+Requirement already satisfied: pillow>=10.1 in ./.venv/lib/python3.12/site-packages (from scikit-image>=0.12->lime) (12.0.0)
+Collecting imageio!=2.35.0,>=2.33 (from scikit-image>=0.12->lime)
+  Downloading imageio-2.37.2-py3-none-any.whl.metadata (9.7 kB)
+Collecting tifffile>=2022.8.12 (from scikit-image>=0.12->lime)
+  Downloading tifffile-2025.12.20-py3-none-any.whl.metadata (30 kB)
+Requirement already satisfied: packaging>=21 in ./.venv/lib/python3.12/site-packages (from scikit-image>=0.12->lime) (25.0)
+Collecting lazy-loader>=0.4 (from scikit-image>=0.12->lime)
+  Downloading lazy_loader-0.4-py3-none-any.whl.metadata (7.6 kB)
+Requirement already satisfied: joblib>=1.3.0 in ./.venv/lib/python3.12/site-packages (from scikit-learn>=0.18->lime) (1.5.3)
+Requirement already satisfied: threadpoolctl>=3.2.0 in ./.venv/lib/python3.12/site-packages (from scikit-learn>=0.18->lime) (3.6.0)
+Collecting contourpy>=1.0.1 (from matplotlib->lime)
+  Downloading contourpy-1.3.3-cp312-cp312-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl.metadata (5.5 kB)
+Collecting cycler>=0.10 (from matplotlib->lime)
+  Downloading cycler-0.12.1-py3-none-any.whl.metadata (3.8 kB)
+Collecting fonttools>=4.22.0 (from matplotlib->lime)
+  Downloading fonttools-4.61.1-cp312-cp312-manylinux1_x86_64.manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_5_x86_64.whl.metadata (114 kB)
+Collecting kiwisolver>=1.3.1 (from matplotlib->lime)
+  Downloading kiwisolver-1.4.9-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.whl.metadata (6.3 kB)
+Collecting pyparsing>=3 (from matplotlib->lime)
+  Downloading pyparsing-3.3.1-py3-none-any.whl.metadata (5.6 kB)
+Requirement already satisfied: python-dateutil>=2.7 in ./.venv/lib/python3.12/site-packages (from matplotlib->lime) (2.9.0.post0)
+Requirement already satisfied: six>=1.5 in ./.venv/lib/python3.12/site-packages (from python-dateutil>=2.7->matplotlib->lime) (1.17.0)
+Downloading scikit_image-0.26.0-cp312-cp312-manylinux_2_24_x86_64.manylinux_2_28_x86_64.whl (13.6 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 13.6/13.6 MB 10.2 MB/s eta 0:00:00
+Downloading matplotlib-3.10.8-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.whl (8.7 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 8.7/8.7 MB 15.8 MB/s eta 0:00:00
+Downloading contourpy-1.3.3-cp312-cp312-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl (362 kB)
+Downloading cycler-0.12.1-py3-none-any.whl (8.3 kB)
+Downloading fonttools-4.61.1-cp312-cp312-manylinux1_x86_64.manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_5_x86_64.whl (5.0 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 5.0/5.0 MB 19.1 MB/s eta 0:00:00
+Downloading imageio-2.37.2-py3-none-any.whl (317 kB)
+Downloading kiwisolver-1.4.9-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.whl (1.5 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.5/1.5 MB 15.4 MB/s eta 0:00:00
+Downloading lazy_loader-0.4-py3-none-any.whl (12 kB)
+Downloading pyparsing-3.3.1-py3-none-any.whl (121 kB)
+Downloading tifffile-2025.12.20-py3-none-any.whl (232 kB)
+Building wheels for collected packages: lime
+  Building wheel for lime (pyproject.toml): started
+  Building wheel for lime (pyproject.toml): finished with status 'done'
+  Created wheel for lime: filename=lime-0.2.0.1-py3-none-any.whl size=283913 sha256=0ed3f9d42f6a9b56cb1c4605911a1ca8a7f13a2307bdc740164569d314cbe473
+  Stored in directory: /home/taro/.cache/pip/wheels/e7/5d/0e/4b4fff9a47468fed5633211fb3b76d1db43fe806a17fb7486a
+Successfully built lime
+Installing collected packages: tifffile, pyparsing, lazy-loader, kiwisolver, imageio, fonttools, cycler, contourpy, scikit-image, matplotlib, lime
+Successfully installed contourpy-1.3.3 cycler-0.12.1 fonttools-4.61.1 imageio-2.37.2 kiwisolver-1.4.9 lazy-loader-0.4 lime-0.2.0.1 matplotlib-3.10.8 pyparsing-3.3.1 scikit-image-0.26.0 tifffile-2025.12.20
