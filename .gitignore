@@ -45,3 +45,7 @@ codes/
 Codes/
 __pycache__/
 .pth
+
+# Python bytecode
+__pycache__/
+*.pyc
