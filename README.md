@@ -1,104 +1,108 @@
 # Vietnamese Hate Speech Detection System
 
-## Overview
-This repository contains an academic application project for detecting Vietnamese hate and offensive text. The system uses a fine-tuned PhoBERT model for inference, exposed via a FastAPI backend and an interactive Streamlit dashboard.
+An academic project for Vietnamese hate speech detection using a fine-tuned PhoBERT model.
 
-- Model: PhoBERT (fine-tuned, inference-only)
-- Backend: FastAPI + Uvicorn
-- Dashboard: Streamlit
-- Task: Binary classification (TOXIC vs CLEAN) with confidence scores
-
-## System Architecture
-User → Streamlit Dashboard → FastAPI (Uvicorn) → PhoBERT Model
+> **📖 Full documentation:** [README_FULL.md](README_FULL.md)
 
 ---
 
-## Installation
+## Overview
 
-### Prerequisites
-- Python 3.8+
-- Optional: CUDA-compatible GPU for faster inference
+| Attribute | Value |
+|-----------|-------|
+| Task | Binary classification (TOXIC / CLEAN) |
+| Model | PhoBERT (`vinai/phobert-base-v2`) |
+| Prediction Level | **Sentence-level only** |
+| UI | Streamlit dashboard |
+| API | FastAPI |
 
-### Setup
-Install the Python dependencies:
+> ⚠️ **This model does NOT perform span-level or token-level prediction.** It classifies entire sentences.
+
+---
+
+## Quick Start
+
+### 1. Setup
 
 ```bash
+git clone <repository-url>
+cd ViHOS
+python -m venv venv
+source venv/bin/activate
 pip install -r requirements.txt
 ```
 
----
+### 2. Download Model
 
-## Usage
+Place the checkpoint file in `models/phobert_epoch_3.pth`.
 
-### 1) Start the Backend API
-This service loads the model and exposes prediction endpoints.
+Model weights are **not included** in this repository.
 
-```bash
-uvicorn src.api.server:app --reload
-```
+### 3. Run
 
-- API URL: http://localhost:8000
-- API Docs: http://localhost:8000/docs
-
-### 2) Start the Dashboard
-In a separate terminal, run:
-
+**Streamlit Dashboard:**
 ```bash
 streamlit run src/dashboard/app.py
 ```
+→ http://localhost:8501
 
-- Dashboard URL: http://localhost:8501
+**FastAPI Backend:**
+```bash
+uvicorn src.api.server:app --reload
+```
+→ http://localhost:8000/docs
 
 ---
 
-## API Reference
+## Key Features
 
-### POST /predict
-
-Request body:
-
-```json
-{
-  "text": "Nội dung cần kiểm tra"
-}
-```
-
-Response body:
-
-```json
-{
-  "label": "TOXIC",
-  "confidence": "99.69%",
-  "clean_text": "nội dung cần kiểm tra"
-}
-```
+- **Sentence classification:** TOXIC or CLEAN with confidence score
+- **Keyword highlighting:** Heuristic fallback (not model output)
+- **LIME explanations:** Post-hoc interpretability for TOXIC predictions
+- **Batch processing:** Upload CSV/XLSX for bulk analysis
+- **Feedback collection:** User corrections saved to CSV
 
 ---
 
-## Dataset & Acknowledgement
-This project is inspired by the ViHOS dataset (Vietnamese Hate and Offensive Spans Detection).
+## Important Limitations
 
-- ViHOS is a span-level dataset.
-- This project adapts the data for text-level binary classification suitable for moderation systems.
+| Limitation | Description |
+|------------|-------------|
+| Sentence-level only | No word or span-level predictions |
+| Keyword highlighting | Heuristic, not model-based |
+| LIME | Post-hoc explanation, not model output |
+| Vietnamese only | Not trained on other languages |
+| No auto-retraining | Feedback is stored but not used automatically |
 
-The dataset examples may contain offensive language; they are used for research and educational purposes only.
+---
+
+## API
+
+**POST /predict**
+
+```
+// Request
+{"text": "Nội dung cần kiểm tra"}
+
+// Response
+{"label": "TOXIC", "confidence": "99.69%", "clean_text": "..."}
+```
 
 ---
 
 ## Citation
-If you use the ViHOS dataset or its annotation logic, please cite the original paper:
 
-```
+```bibtex
 @inproceedings{hoang-etal-2023-vihos,
   title = {ViHOS: Vietnamese Hate and Offensive Spans Detection},
   author = {Hoang, Phu Gia and Luu, Canh Duc and Tran, Khanh Quoc and Nguyen, Kiet Van and Nguyen, Ngan Luu-Thuy},
-  booktitle = {Proceedings of the 17th Conference of the European Chapter of the Association for Computational Linguistics},
-  year = {2023},
-  publisher = {Association for Computational Linguistics}
+  booktitle = {EACL 2023},
+  year = {2023}
 }
 ```
 
 ---
 
-## Author
-Student Project – Vietnamese Hate Speech Detection
+## License
+
+See [LICENSE](LICENSE) for details.
